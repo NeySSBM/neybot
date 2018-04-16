@@ -38,6 +38,16 @@ client.on("message", async message => {
 	message.author.sendMessage("```+ping - shows the latency between you and the server and the bot``` ");
 	message.author.sendMessage("```+animetit - sends you a sexy anime girl pic```");
 	}
+	//staffcommands
+	//modhelp
+	if(command === "modhelp") {
+		if(!message.member.roles.some(r=>["God", "Deity (Admin)", "Seraph (Moderator)"].includes(r.name)) )
+			return message.reply("Sorry, you do not have permission to do this. Please contact staff if there is a problem.");
+	message.author.sendMessage("```+purge #ofmessages - currently broken```");
+	message.author.sendMessage("```+mute @player time- currently broken```");
+	message.author.sendMessage("```+kick @player reason - kicks player from the server```");
+	message.author.sendMessage("```+ban @player reason - bans player from the server```");
+	}
 	//kick
 	if(command === "kick") {
 		if(!message.member.roles.some(r=>["God", "Deity (Admin)", "Seraph (Moderator)"].includes(r.name)) )
