@@ -15,22 +15,29 @@ client.on("guildDelete", guild => {
 	console.log(`NeyBOT left Guild: ${guild.name} (id: ${guild.id})`)
 	client.user.setActivity(`Wobbling ${client.guilds.size} Servers`);
 });
+client.on("guildMemberAdd", member => {
+	console.log('User ' + member.user.username + ' has joined the server')
+	var role = member.guild.roles.find('name', 'Slaves (Illegals)');
+	member.addRole(role)
+})
 //Bot Config
 client.on("message", async message => {
 	if(message.author.bot) return;
 	if(message.content.indexOf(config.prefix) !== 0) return;
 	const args = message.content.slice(config.prefix.length).trim().split(/ +/g);
 	const command = args.shift().toLowerCase();
-	//commands
+	//ping
 	if(command === "ping") {
 		const m = await message.channel.send("Ping?");
 		m.edit(`Pong! Latency = ${m.createdTimestamp - message.createdTimestamp}ms, API Latency = ${Math.round(client.ping)}ms`);
 	}
+	//help
 	if(command === "help") {
 		if(!message.member.roles.some(r=>["God", "Deity (Admin)", "Seraph (Moderator)", "Immortal (Members)", "Mortals (Sketchy)"].includes(r.name)) )
 			return message.reply("Sorry, you do not have permission to do this. Please contact staff if there is a problem.");
 	message.channel.send("working on it");
 	}
+	//kick
 	if(command === "kick") {
 		if(!message.member.roles.some(r=>["God", "Deity (Admin)", "Seraph (Moderator)"].includes(r.name)) )
 			return message.reply("Sorry, you do not have permission to do this. Please contact staff if there is a problem.");
@@ -45,7 +52,7 @@ client.on("message", async message => {
 			.catch(error => message.reply(`Sorry ${message.author}, I couldnt kick the player because: ${error}`));
 			message.reply(`Player: ${member.user.tag} has been kicked by ${message.author.tag} because ${reason}`);
 	}
-	//kick
+	//ban
 	if(command === "ban") {
 		if(!message.member.roles.some(r=>["God", "Deity (Admin)"].includes(r.name)) )
 			return message.reply("Sorry, you do not have permission to do this. Please contact staff if there is a problem.");
@@ -84,7 +91,7 @@ client.on("message", async message => {
 		let time = args[1];
 		if(!time) return message.reply("Please provide a valid time span");
 
-		member.addrole(muteRole.id);
+		member.addRole(muteRole.id);
 		message.channel.send(`${member.user.tag} has been muted by ${message.author.tag} for ${ms(ms(time), {long: true})}`);
 
 		setTimeout(function() {
