@@ -99,6 +99,15 @@ client.on("message", async message => {
 			msg.channel.send(`${message.user.tag} has been unmuted`)
 		}, ms(time));
 	}
+	//wobblegif
+	if(command === "wobble") {
+		if(!message.member.roles.some(r=>["God", "Deity (Admin)", "Seraph (Moderator)", "Immortal (Members)", "Mortals (Sketchy)"].includes(r.name)) )
+			return message.reply("Sorry, you do not have permission to do this. Please contact staff if there is a problem.");
+		message.channel.send(` `, {
+			files: [
+				"https://imgur.com/a/AskCH"
+				]
+		});
 });
 
 client.login(config.token);
