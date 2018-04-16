@@ -35,7 +35,8 @@ client.on("message", async message => {
 	if(command === "help") {
 		if(!message.member.roles.some(r=>["God", "Deity (Admin)", "Seraph (Moderator)", "Immortal (Members)", "Mortals (Sketchy)"].includes(r.name)) )
 			return message.reply("Sorry, you do not have permission to do this. Please contact staff if there is a problem.");
-	message.channel.send("working on it");
+	message.author.sendMessage("```+ping - shows the latency between you and the server and the bot``` ");
+	message.author.sendMessage("```+animetit - sends you a sexy anime girl pic```");
 	}
 	//kick
 	if(command === "kick") {
@@ -103,6 +104,7 @@ client.on("message", async message => {
 	if(command === "animetit") {
 		if(!message.member.roles.some(r=>["God", "Deity (Admin)", "Seraph (Moderator)", "Immortal (Members)", "Mortals (Sketchy)"].includes(r.name)) )
 			return message.reply("Sorry, you do not have permission to do this. Please contact staff if there is a problem.");
+		message.author.sendMessage("**8===D---**");
 		message.author.sendMessage("**Ha NiBBa YoU GaY!**");
 	}
 });
