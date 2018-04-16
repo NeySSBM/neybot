@@ -26,7 +26,9 @@ client.on("message", async message => {
 		const m = await message.channel.send("Ping?");
 		m.edit(`Pong! Latency = ${m.createdTimestamp - message.createdTimestamp}ms, API Latency = ${Math.round(client.ping)}ms`);
 	}
-
+		if(command === "help") {
+		message.userID.send("working on it");
+		}
 	if(command === "kick") {
 		if(!message.member.roles.some(r=>["God", "Deity (Admin)", "Seraph (Moderator)"].includes(r.name)) )
 			return message.reply("Sorry, you do not have permission to do this. Please contact staff if there is a problem.");
