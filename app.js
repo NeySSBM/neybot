@@ -17,8 +17,8 @@ client.on("guildDelete", guild => {
 });
 client.on("guildMemberAdd", member => {
 	console.log('User ' + member.user.username + ' has joined the server')
-	var role = member.guild.roles.find('name', 'Slaves (Illegals)');
-	member.addRole(role)
+	var joinRole = member.guild.roles.find("name", "Unknown");
+	member.addRole(joinRole.id);
 })
 //Bot Config
 client.on("message", async message => {
