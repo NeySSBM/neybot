@@ -17,7 +17,7 @@ client.on("guildDelete", guild => {
 });
 client.on("guildMemberAdd", member => {
 	console.log('User ' + member.user.username + ' has joined the server')
-	var joinRole = member.guild.roles.find("name", "Unknown");
+	var joinRole = member.guild.roles.get("name", "Unknown");
 	member.addRole(joinRole.id);
 })
 //Bot Config
