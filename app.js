@@ -56,12 +56,12 @@ client.on("message", async message => {
 		"Cannot predict now",
 		"Concentrate and ask again",
 		"Don't count on it",
-		"My rely is no",
+		"My reply is no",
 		"My sources say no",
 		"Outlook not so good",
 		"Very doubtful"];
 		let result = Math.floor((Math.random() * replies.length));
-		let question = args.slice(1).join(" ");
+		let question = args.slice(0).join(" ");
 		let ballembed = new Discord.RichEmbed()
 		.setAuthor(message.author.tag)
 		.setColor("#FF9900")
