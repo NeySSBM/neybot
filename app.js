@@ -50,8 +50,8 @@ client.on("message", async message => {
 	}
 	//kick
 	if(command === "kick") {
-		if(message.member.roles.some(r=>["God", "Deity_(Admin)", "Seraph_(Moderator)"].includes(r.name)) ) {
-			else message.reply("Sorry, you do not have permission to do this. Please contact staff if there is a problem.");
+		if(!message.member.roles.some(r=>["God", "Deity_(Admin)", "Seraph_(Moderator)"].includes(r.name)) )
+			return message.reply("Sorry, you do not have permission to do this. Please contact staff if there is a problem.");
 		let member = message.mentions.members.first() || message.guild.members.get(args[0]);
 		if(!member)
 			return message.reply("Please mention a Valid Member of this server");
