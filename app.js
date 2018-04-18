@@ -135,7 +135,7 @@ client.on("message", async message => {
 		const ms = require("ms");
 		let member = message.mentions.members.first();
 		if(!member) return message.reply("Please mention a Valid Member of this server");
-		let muteRole = message.guild.roles.find("name", "Muted");
+		let muteRole = member.guild.roles.find("name", "Muted");
 		if(!muteRole) return message.reply("Role: Muted does not exist");
 		let args = message.content.split(" ").slice(1);
 		let time = args[1];
