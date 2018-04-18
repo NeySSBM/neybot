@@ -15,11 +15,13 @@ client.on("guildDelete", guild => {
 	console.log(`NeyBOT left Guild: ${guild.name} (id: ${guild.id})`)
 	client.user.setActivity(`Wobbling ${client.guilds.size} Servers`);
 });
+//When a player Joins
 client.on("guildMemberAdd", member => {
 	console.log('User ' + member.user.username + ' has joined the server')
-	var joinRole = member.guild.roles.get("name", "Unknown");
-	member.addRole(joinRole.id);
-})
+	let role = member.guild.roles.find("name", "Unknown");
+	member.addRole(role).catch(console.error);
+});
+
 //Bot Config
 client.on("message", async message => {
 	if(message.author.bot) return;
@@ -31,17 +33,54 @@ client.on("message", async message => {
 		const m = await message.channel.send("Ping?");
 		m.edit(`Pong! Latency = ${m.createdTimestamp - message.createdTimestamp}ms, API Latency = ${Math.round(client.ping)}ms`);
 	}
+	//8ball
+	if(command === "8ball") {
+		if(!message.member.roles.some(r=>["God", "Deity (Admin)", "Seraph (Moderator)", "Immortal (Members)", "Mortals (Sketchy)"].includes(r.name)) )
+			return message.reply("You're mentally not strong enough for this command");
+		if(!args[2])
+			return message.reply("Please ask a full question");
+		let replies = [
+		"It is certain",
+		"It is decidedly so",
+		"Without a doubt",
+		"Yes, definetly",
+		"You may rely on it",
+		"As I see it, yes",
+		"Most likely",
+		"Outlook good",
+		"Yes",
+		"Signs point to yes",
+		"Reply hazy, try again",
+		"Ask again later",
+		"Better not tell you now",
+		"Cannot predict now",
+		"Concentrate and ask again",
+		"Don't count on it",
+		"My rely is no",
+		"My sources say no",
+		"Outlook not so good",
+		"Very doubtful"];
+		let result = Math.floor((Math.random() * replies.length));
+		let question = args.slice(1).join(" ");
+		let ballembed = new Discord.RichEmbed()
+		.setAuthor(message.author.tag)
+		.setColor("#FF9900")
+		.addField("Question", question)
+		.addField("Answer", replies[result]);
+		message.channel.send(ballembed);
+	}
 	//help
 	if(command === "help") {
-		if(!message.member.roles.some(r=>["God", "Deity (Admin)", "Seraph (Moderator)", "Immortal (Members)", "Mortals (Sketchy)"].includes(r.name)) )
+		if(!message.member.roles.some(r=>["God", "Deity (Admin)", "Seraph (Moderator)", "Immortal (Members)", "Mortals (Sketchy)", "Unknown"].includes(r.name)) )
 			return message.reply("Sorry, you do not have permission to do this. Please contact staff if there is a problem.");
 	message.author.sendMessage("```+ping - shows the latency between you and the server and the bot``` ");
+	message.author.sendMessage("```+8ball - ask the all powerful 8 ball anything you want```");
 	message.author.sendMessage("```+animetit - sends you a sexy anime girl pic```");
 	}
 	//staffcommands
 	//modhelp
 	if(command === "modhelp") {
-		if(!message.member.roles.some(r=>["God", "Deity (Admin)", "Seraph (Moderator)"].includes(r.name)) )
+		if(!message.member.roles.some(r=>["God", "Deity (Admin)", "Seraph (Moderator)"].includes(r.name)) ) 
 			return message.reply("Sorry, you do not have permission to do this. Please contact staff if there is a problem.");
 	message.author.sendMessage("```+purge #ofmessages - currently broken```");
 	message.author.sendMessage("```+mute @player time- currently broken```");
@@ -50,7 +89,7 @@ client.on("message", async message => {
 	}
 	//kick
 	if(command === "kick") {
-		if(!message.member.roles.some(r=>["God", "Deity_(Admin)", "Seraph_(Moderator)"].includes(r.name)) )
+		if(!message.member.roles.some(r=>["God", "Deity (Admin)", "Seraph (Moderator)"].includes(r.name)) ) 
 			return message.reply("Sorry, you do not have permission to do this. Please contact staff if there is a problem.");
 		let member = message.mentions.members.first() || message.guild.members.get(args[0]);
 		if(!member)
