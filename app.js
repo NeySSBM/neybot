@@ -56,12 +56,12 @@ client.on("message", async message => {
 		"Cannot predict now",
 		"Concentrate and ask again",
 		"Don't count on it",
-		"My reply is no",
+		"My rely is no",
 		"My sources say no",
 		"Outlook not so good",
 		"Very doubtful"];
 		let result = Math.floor((Math.random() * replies.length));
-		let question = args.slice(0).join(" ");
+		let question = args.slice(1).join(" ");
 		let ballembed = new Discord.RichEmbed()
 		.setAuthor(message.author.tag)
 		.setColor("#FF9900")
@@ -132,22 +132,38 @@ client.on("message", async message => {
 	if(command === "mute") {
 		if(!message.member.roles.some(r=>["God", "Deity (Admin)", "Seraph (Moderator)"].includes(r.name)) )
 			return message.reply("Sorry, you do not have permission to do this. Please contact staff if there is a problem.");
-		const ms = require("ms");
+		const ms = require("ms")
+		.catch(error => message.reply(`Sorry, couldn't mute ${member.user.tag} because ${error}`));
 		let member = message.mentions.members.first();
 		if(!member) return message.reply("Please mention a Valid Member of this server");
-		let muteRole = member.guild.roles.find("name", "Muted");
+		let muteRole = message.guild.roles.find("name", "Muted");
 		if(!muteRole) return message.reply("Role: Muted does not exist");
 		let args = message.content.split(" ").slice(1);
 		let time = args[1];
 		if(!time) return message.reply("Please provide a valid time span");
 
 		member.addRole(muteRole.id);
-		message.channel.send(`${member.user.tag} has been muted by ${message.author.tag} for ${ms(ms(time), {long: true})}`);
+		message.channel.send(`${member.user.tag} has been muted by ${message.author.tag} for ${ms(ms(time), {long: true})}`)
+		.catch(error => message.reply(`Sorry, couldn't mute ${member.user.tag} because ${error}`));
 
 		setTimeout(function() {
-			member.removeRole(mute.id);
-			msg.channel.send(`${message.user.tag} has been unmuted`)
+			member.removeRole('name', 'Muted');
+			message.channel.send(`${message.user.tag} has been unmuted`)
 		}, ms(time));
+	}
+	//Unmute
+	if(command === "unmute") {
+		if(!message.member.roles.some(r=>["God", "Deity (Admin)", "Seraph (Moderator)"].includes(r.name)) )
+			return message.reply("Sorry, you do not have permission to do this. Please contact staff if there is a problem.");
+		let member = message.mentions.members.first();
+		if (!member)
+			return message.reply("Please mention a Valid Member of this server");
+		let muteRole = message.guild.roles.find("name", "Muted");
+		if(!muteRole)
+			return message.reply("Role: Muted does not exist");
+		let args = message.content.split(" ").slice(1);
+		member.removeRole(muteRole.id);
+		messsage.reply(`${message.user,tag} has been unmuted`);
 	}
 	//nsfwanimetits
 	if(command === "animetit") {
